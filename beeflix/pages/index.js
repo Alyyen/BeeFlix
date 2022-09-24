@@ -16,21 +16,22 @@ const Home = (context) => {
     const [search, setSearch] = useState('');
     const [page, setPage] = useState(1);
     const [pagesNumber, setPagesNumber] = useState(1);
-
     const [firstPassage, setFirstPassage] = useState('');
 
     const onFormChange = (e) => {
         setPage(1);
         e.preventDefault();
 
-        setSearch(document.querySelector("input[type=search]").value);
+        const title = document.querySelector("input[type=search]").value;
+        setSearch(title);
 
-        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + page + '&s="' + search + '"')
+        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + page + '&s="' + title + '"')
             .then(res => res.json())
             .then(res => {
+                console.log(res);
                     if (res.Search && res.Search.length > 0) {
                         setData(res.Search);
-                        setPagesNumber( Math.ceil(res.totalResults/10));
+                        setPagesNumber(Math.ceil(res.totalResults / 10));
                     } else {
                         setData([]);
                     }
@@ -38,7 +39,7 @@ const Home = (context) => {
             )
 
         // ERROR MESSAGE
-        if (document.querySelector("input[type=search]").value === ''){
+        if (document.querySelector("input[type=search]").value === '') {
             setFirstPassage('');
         } else {
             setFirstPassage('No result to display');
@@ -46,11 +47,9 @@ const Home = (context) => {
     };
 
     const nextPage = () => {
-        setData([]);
-        setPage(page+1);
-        setSearch(document.querySelector("input[type=search]").value);
+        setPage(page + 1);
 
-        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + page + '&s="' + search + '"')
+        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + (page + 1) + '&s="' + search + '"')
             .then(res => res.json())
             .then(res => {
                     if (res.Search && res.Search.length > 0) {
@@ -63,11 +62,9 @@ const Home = (context) => {
     }
 
     const previousPage = () => {
-        setData([]);
-        setPage(page-1);
-        setSearch(document.querySelector("input[type=search]").value);
+        setPage(page - 1);
 
-        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + page + '&s="' + document.querySelector("input[type=search]").value + '"')
+        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + (page - 1) + '&s="' + document.querySelector("input[type=search]").value + '"')
             .then(res => res.json())
             .then(res => {
                     if (res.Search && res.Search.length > 0) {
@@ -84,6 +81,7 @@ const Home = (context) => {
         return (
             <div className='container'>
                 <h2>Search movies by title</h2>
+                { /* SEARCH FORM */}
                 <Form onSubmit={onFormChange} className="d-flex">
                     <Form.Control
                         type="search"
@@ -91,27 +89,25 @@ const Home = (context) => {
                         aria-label="Search"
                     />
                 </Form>
-                <br/>
-                <br/>
-                <h5>Results for "{search}"</h5>
+                <br/><br/><h5>Results for "{search}"</h5>
+                { /* THUMBNAIL GALLERY */}
                 <div className="row text-center text-lg-start d-flex">
                     {data.map(elem => (
                         <div key={elem.imdbID} className="col-sm-4 col-6 col-md-3 col-lg-2">
                             <Link href={'/movies/' + elem.imdbID} className="">
                                 <a className="d-block">
-                                    <Image src={elem.Poster ? (elem.Poster) : ('/no-poster.png')} width={126} height={190} alt={elem.Title}
-                                           className="img-fluid img-thumbnail" onError={() => setSrc('/no-poster.png')}/>
+                                    <Image src={elem.Poster && elem.Poster !== "N/A" ? (elem.Poster) : ('/no-poster.png')} width={126}
+                                           height={190} alt={elem.Title}
+                                           className="img-fluid img-thumbnail"/>
                                 </a>
                             </Link>
                         </div>
                     ))}
                 </div>
+                { /* PAGINATION */}
                 <p>Page {page} / {pagesNumber}</p>
-                {page > 1 ? (
-                    <button onClick={previousPage} className={styles.btn}>Previous page</button>) : (<></>)}
-                {pagesNumber > page ? (
-                    <button onClick={nextPage} className={styles.btn}>Next page</button>
-                ) : (<></>)}
+                {page > 1 ? (<button onClick={previousPage} className={styles.btn}>Previous page</button>) : (<></>)}
+                {pagesNumber > page ? (<button onClick={nextPage} className={styles.btn}>Next page</button>) : (<></>)}
             </div>
         )
     } else {
@@ -119,6 +115,7 @@ const Home = (context) => {
         return (
             <div className='container'>
                 <h2>Search movies by title</h2>
+                { /* SEARCH FORM */}
                 <Form onSubmit={onFormChange} className="d-flex">
                     <Form.Control
                         type="search"
@@ -126,9 +123,7 @@ const Home = (context) => {
                         aria-label="Search"
                     />
                 </Form>
-                <br/>
-                <br/>
-                <h5>{firstPassage}</h5>
+                <br/><br/><h5>{firstPassage}</h5>
             </div>
         )
     }

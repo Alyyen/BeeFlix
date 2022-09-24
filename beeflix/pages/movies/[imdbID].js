@@ -16,22 +16,21 @@ export async function getStaticProps(context) {
     const res = await fetch('http://www.omdbapi.com/?apikey=' + process.env.API_KEY + "&type=movie&i=" + id);
     const data = await res.json();
     return {
-        props: { data: data }
+        props: {data: data}
     }
 }
 
-const Details = ({ data }) => {
-    console.log(data);
+const Details = ({data}) => {
     return (
         <div className='container'>
-            <h1>{ data.Title }</h1>
-            <Image src={data.Poster} width={126} height={190} alt={data.Title}
+            <h1>{data.Title}</h1>
+            <Image src={data.Poster && data.Poster !== "N/A" ? (data.Poster) : ('/no-poster.png')} width={126} height={190} alt={data.Title}
                    className="img-fluid img-thumbnail"/>
-            <p>{ data.Year } ({data.Runtime})</p>
-            <h6>{ data.Genre }</h6>
-            <p>"{ data.Plot }"</p>
-            <p>Directed by { data.Director } and written by { data.Writer }</p>
-            <p>With { data.Actors }</p>
+            <p>{data.Year} ({data.Runtime})</p>
+            <h6>{data.Genre}</h6>
+            <p>"{data.Plot}"</p>
+            <p>Directed by {data.Director} and written by {data.Writer}</p>
+            <p>With {data.Actors}</p>
         </div>
     );
 }
