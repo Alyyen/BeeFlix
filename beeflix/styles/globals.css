@@ -56,6 +56,6 @@ footer {
   color: #FFF;
 }
 
-.row {
-  margin-bottom: 100px !important;
+.container {
+  margin-bottom: 100px;
 }

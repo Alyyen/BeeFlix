@@ -1,3 +1,6 @@
+import Image from "next/image";
+import React from "react";
+
 export const getStaticPaths = async () => {
     // CAN'T FIND ALL PATHS, SEND EMPTY ARRAY AS PATHS
     // BLOCKING = TO CALL BEFORE INITIAL RENDER
@@ -18,11 +21,17 @@ export async function getStaticProps(context) {
 }
 
 const Details = ({ data }) => {
+    console.log(data);
     return (
         <div className='container'>
             <h1>{ data.Title }</h1>
-            <p>{ data.Year }</p>
-            <p>{ data.Poster }</p>
+            <Image src={data.Poster} width={126} height={190} alt={data.Title}
+                   className="img-fluid img-thumbnail"/>
+            <p>{ data.Year } ({data.Runtime})</p>
+            <h6>{ data.Genre }</h6>
+            <p>"{ data.Plot }"</p>
+            <p>Directed by { data.Director } and written by { data.Writer }</p>
+            <p>With { data.Actors }</p>
         </div>
     );
 }
