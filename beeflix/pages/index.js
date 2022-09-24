@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {Form} from "react-bootstrap";
 import Link from "next/link";
-import styles from "../styles/Movies.module.css";
 import Image from "next/image"
 
 export const getStaticProps = () => {
@@ -47,14 +46,17 @@ const Home = (context) => {
                 </Form>
                 <br/>
                 <h4>Result(s)</h4>
-                <div className="row">
-                {data.map(elem => (
-                    <Link key={elem.imdbID} href={'/movies/' + elem.imdbID}>
-                        <a className={styles.single}>
-                            <Image src={elem.Poster} width={126} height={190} alt={elem.Title} />
-                        </a>
-                    </Link>
-                ))}
+                <div className="row text-center text-lg-start d-flex">
+                    {data.map(elem => (
+                        <div className="col-sm-4 col-6 col-md-3 col-lg-2">
+                            <Link key={elem.imdbID} href={'/movies/' + elem.imdbID} className="">
+                                <a className="d-block">
+                                    <Image src={elem.Poster} width={126} height={190} alt={elem.Title}
+                                           className="img-fluid img-thumbnail"/>
+                                </a>
+                            </Link>
+                        </div>
+                    ))}
                 </div>
             </div>
         )
