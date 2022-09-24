@@ -12,12 +12,14 @@ export const getStaticProps = () => {
 
 const Home = (context) => {
     const [data, setData] = useState([]);
+    const [search, setSearch] = useState('');
     const [firstPassage, setFirstPassage] = useState('');
 
     const onFormChange = (e) => {
         e.preventDefault();
 
         let searchVal = document.querySelector("input[type=search]").value;
+        setSearch(searchVal);
 
         fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=1&s="' + searchVal + '"')
             .then(res => res.json())
@@ -37,6 +39,7 @@ const Home = (context) => {
         // RESULTS TO DISPLAY
         return (
             <div className='container'>
+                <h2>Search movies by title</h2>
                 <Form onSubmit={onFormChange} className="d-flex">
                     <Form.Control
                         type="search"
@@ -45,7 +48,8 @@ const Home = (context) => {
                     />
                 </Form>
                 <br/>
-                <h4>Result(s)</h4>
+                <br/>
+                <h5>Results for "{search}"</h5>
                 <div className="row text-center text-lg-start d-flex">
                     {data.map(elem => (
                         <div className="col-sm-4 col-6 col-md-3 col-lg-2">
@@ -64,6 +68,7 @@ const Home = (context) => {
         // TOO MANY OR NO RESULT AVAILABLE
         return (
             <div className='container'>
+                <h2>Search movies by title</h2>
                 <Form onSubmit={onFormChange} className="d-flex">
                     <Form.Control
                         type="search"
@@ -72,7 +77,8 @@ const Home = (context) => {
                     />
                 </Form>
                 <br/>
-                <h4>{firstPassage}</h4>
+                <br/>
+                <h5>{firstPassage}</h5>
             </div>
         )
     }
