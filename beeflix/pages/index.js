@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Form} from "react-bootstrap";
 import Link from "next/link";
 import styles from "../styles/Movies.module.css";
+import Image from "next/image"
 
 export const getStaticProps = () => {
     return {
@@ -36,7 +37,7 @@ const Home = (context) => {
     if (data.length >= 1) {
         // RESULTS TO DISPLAY
         return (
-            <div>
+            <div className='container'>
                 <Form onSubmit={onFormChange} className="d-flex">
                     <Form.Control
                         type="search"
@@ -44,21 +45,23 @@ const Home = (context) => {
                         aria-label="Search"
                     />
                 </Form>
+                <br/>
                 <h4>Result(s)</h4>
+                <div className="row">
                 {data.map(elem => (
                     <Link key={elem.imdbID} href={'/movies/' + elem.imdbID}>
                         <a className={styles.single}>
-                            <h4>{elem.Title}</h4>
+                            <Image src={elem.Poster} width={126} height={190} alt={elem.Title} />
                         </a>
                     </Link>
                 ))}
-                <hr/>
+                </div>
             </div>
         )
     } else {
         // TOO MANY OR NO RESULT AVAILABLE
         return (
-            <div>
+            <div className='container'>
                 <Form onSubmit={onFormChange} className="d-flex">
                     <Form.Control
                         type="search"
@@ -66,10 +69,12 @@ const Home = (context) => {
                         aria-label="Search"
                     />
                 </Form>
+                <br/>
                 <h4>{firstPassage}</h4>
             </div>
         )
     }
 }
+
 
 export default Home;

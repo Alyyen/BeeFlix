@@ -19,7 +19,7 @@ export async function getStaticProps(context) {
 
 const Details = ({ data }) => {
     return (
-        <div>
+        <div className='container'>
             <h1>{ data.Title }</h1>
             <p>{ data.Year }</p>
             <p>{ data.Poster }</p>

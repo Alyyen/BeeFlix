@@ -28,16 +28,19 @@ nav .logo {
 }
 
 footer {
+  width:100%;
+  background-color: #FFF;
+  position: fixed;
+  bottom: 0;
   display: block;
   text-align: center;
-  padding: 30px 0;
-  margin-top: 60px;
+  padding: 30px;
+  margin: 0 auto;
   color: #57687A;
   border-top: 1px solid #EFF5FC;
 }
 
 /* BUTTON STYLE */
-
 .btn {
   background-color: rgb(0, 64, 128);
   color: white;
@@ -51,4 +54,8 @@ footer {
 .btn:hover {
   background-color: #E7A33E;
   color: #FFF;
+}
+
+.row {
+  margin-bottom: 100px !important;
 }
