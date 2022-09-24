@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Form} from "react-bootstrap";
 import Link from "next/link";
 import Image from "next/image"
+import styles from "../styles/Home.module.css"
 
 export const getStaticProps = () => {
     return {
@@ -13,15 +14,17 @@ export const getStaticProps = () => {
 const Home = (context) => {
     const [data, setData] = useState([]);
     const [search, setSearch] = useState('');
+    const [page, setPage] = useState(1);
     const [firstPassage, setFirstPassage] = useState('');
 
     const onFormChange = (e) => {
         e.preventDefault();
+        setPage(1);
 
         let searchVal = document.querySelector("input[type=search]").value;
         setSearch(searchVal);
 
-        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=1&s="' + searchVal + '"')
+        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + page + '&s="' + searchVal + '"')
             .then(res => res.json())
             .then(res => {
                     if (res.Search && res.Search.length > 0) {
@@ -34,6 +37,23 @@ const Home = (context) => {
 
         setFirstPassage('No result to display');
     };
+
+    const nextPage = (e) => {
+        setPage(page+1);
+        setSearch(document.querySelector("input[type=search]").value);
+
+        fetch('http://www.omdbapi.com/?apikey=' + context.apikey + '&type=movie&page=' + page + '&s="' + document.querySelector("input[type=search]").value + '"')
+            .then(res => res.json())
+            .then(res => {
+                    if (res.Search && res.Search.length > 0) {
+                        setData(res.Search);
+                    } else {
+                        setData([]);
+                    }
+                }
+            )
+
+    }
 
     if (data.length >= 1) {
         // RESULTS TO DISPLAY
@@ -62,6 +82,7 @@ const Home = (context) => {
                         </div>
                     ))}
                 </div>
+                <button onClick={nextPage} className={styles.btn}>See more</button>
             </div>
         )
     } else {
