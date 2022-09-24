@@ -12,6 +12,7 @@ export const getStaticProps = () => {
 
 const Home = (context) => {
     const [data, setData] = useState([]);
+    const [firstPassage, setFirstPassage] = useState('');
 
     const onFormChange = (e) => {
         e.preventDefault();
@@ -28,6 +29,8 @@ const Home = (context) => {
                     }
                 }
             )
+
+        setFirstPassage('No result to display');
     };
 
     if (data.length >= 1) {
@@ -63,7 +66,7 @@ const Home = (context) => {
                         aria-label="Search"
                     />
                 </Form>
-                <h4>No data to display.</h4>
+                <h4>{firstPassage}</h4>
             </div>
         )
     }
