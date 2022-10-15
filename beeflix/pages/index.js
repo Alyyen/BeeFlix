@@ -42,7 +42,7 @@ const Home = (context) => {
         if (document.querySelector("input[type=search]").value === '') {
             setFirstPassage('');
         } else {
-            setFirstPassage('No result to display');
+            setFirstPassage("loader4");
         }
     };
 
@@ -123,7 +123,7 @@ const Home = (context) => {
                         aria-label="Search"
                     />
                 </Form>
-                <br/><br/><h5>{firstPassage}</h5>
+                <br/><br/><div className={firstPassage}></div>
             </div>
         )
     }
